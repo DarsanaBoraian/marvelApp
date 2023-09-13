@@ -1,27 +1,29 @@
 package com.example.marvelapp.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.focusable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.example.marvelapp.data.model.Marvel
 import com.example.marvelapp.data.model.MarvelItemModel
 
@@ -50,40 +52,43 @@ fun MarvelListContent(marvelDetails: MarvelItemModel) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(0.dp, Color.Transparent, RectangleShape)
+                    .border(2.dp, Color.Gray, RectangleShape)
+                    .padding(8.dp), // Add padding to make the elevation visible
+                    // Optionally clip the card shape
+                    elevation = 4.dp// Add elevation here
             ) {
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .semantics(mergeDescendants = true) {}) {
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                ) {
 
-
-                        marvelItem.name?.let {
-                            Text(
-                                text = it.capitalize(),
-                                fontSize = 25.sp
-                            )}
-
-                            Text(
-                                text = marvelItem.bio.toString(),
-                                fontSize = 25.sp
-                            )
-                            Text(marvelItem.createdby.toString())
-                            Text(marvelItem.firstappearance.toString())
-                            Text(marvelItem.publisher.toString())
-                            Text(marvelItem.realname.toString())
-
-
-
-
+                    marvelItem.name?.let {
+                        Text(
+                            text = it.capitalize(),
+                            fontSize = 25.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
-                    Divider(
+
+                    AsyncImage(
+                        model = marvelItem.imageurl,
+                        contentDescription = "Image Marvel",
                         modifier = Modifier
-                            .fillMaxWidth(),
-                        color = Color.Gray // Set the color to gray
+                            .size(180.dp)
                     )
 
-
+                    Text(
+                        text = marvelItem.bio.toString(),
+                        fontSize = 16.sp
+                    )
+                    Text("Real Name : "+ marvelItem.realname.toString())
+                    Text("Created by : " + marvelItem.createdby.toString())
+                    Text("First Appearance : "+marvelItem.firstappearance.toString())
+                    Text("Publisher : " +marvelItem.publisher.toString())
+                }
             }
+            Spacer(Modifier.height(5.dp))
         }
     }
 }
+
